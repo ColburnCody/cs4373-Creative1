@@ -1,5 +1,7 @@
 import * as Element from '../viewpage/element.js'
 import * as FirebaseController from './firebase_controller.js'
+import * as Constant from '../model/constant.js'
+import * as Util from '../viewpage/util.js'
 
 export let currentUser
 
@@ -12,7 +14,8 @@ export function addEventListeners() {
             await FirebaseController.signIn(email, password);
             Element.modalSigninForm.hide();
         } catch (e) {
-            console.log(e);
+            if (Constant.DEV) console.log(e);
+            Util.info('Sign in error', JSON.stringify(e), Element.modalSigninForm);
         }
     });
 
