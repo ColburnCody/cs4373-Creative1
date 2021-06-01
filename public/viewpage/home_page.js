@@ -30,7 +30,13 @@ export function addEventListeners() {
         try {
             const docId = await FirebaseController.addThread(thread);
             thread.docId = docId;
-            home_page(); // we will improve this later
+            //home_page(); // we will improve this later
+            const trTag = document.createElement('tr'); // <tr></tr>
+            trTag.innerHTML = buildThreadView(thread);
+            const threadTableBody = document.getElementById('thread-table-body');
+            threadTableBody.prepend(trTag);
+            e.target.reset(); // clears entry in the form
+
             Util.info('Success', 'A new thread has been added', Element.modalCreateThread);
         } catch (e) {
             if (Constant.DEV) console.log(e);
@@ -77,11 +83,11 @@ function buildHomeScreen(threadList) {
         <th scope="col">Title</th>
         <th scope="col">Keywords</th>
         <th scope="col">Posted by</th>
-        <th scope="col>Content</th>
-        <th scope="col>Posted At</th>
+        <th scope="col">Content</th>
+        <th scope="col">Posted At</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="thread-table-body">
     `
 
     threadList.forEach(thread => {
