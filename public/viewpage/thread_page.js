@@ -3,6 +3,7 @@ import * as Element from './element.js'
 import * as Util from './util.js'
 import * as FirebaseController from '../controller/firebase_controller.js'
 import * as Constant from '../model/constant.js'
+import { Reply } from '../model/reply.js'
 
 export function addViewButtonListener() {
     const viewButtonForms = document.getElementsByClassName('thread-view-form');
@@ -32,13 +33,14 @@ async function thread_page(threadId) {
     // 5. add a form for a new reply
 
     let thread
+    let replies
     try {
         thread = await FirebaseController.getOneThread(threadId)
         if (!thread) {
             Util.info('Error', 'Thread does not exist');
             return;
         }
-
+        replies = await FirebaseController.getReplyList(threadId)
     } catch (e) {
         if (Constant.DEV) console.log(e);
         Util.info('Error', JSON.stringify(e))
@@ -52,5 +54,58 @@ async function thread_page(threadId) {
         <hr>
     `;
 
+    html += '<div id="message-reply-body">'
+    // display all replies
+    if (replies && replies.length > 0) {
+        replies.forEach(r => {
+            html += buildReplyView(r)
+        })
+    }
+    html += '</div>'
+
+    // add new reply
+    html += `
+        <div>
+            <textarea id="textarea-add-new-reply" placeholder="Reply to this thread"></textarea>
+            <br>
+            <button id="button-add-new-reply" class="btn btn-outline-info">Post reply</button>
+        </div>
+    `;
+
     Element.root.innerHTML = html;
+
+    document.getElementById('button-add-new-reply').addEventListener('click', async () => {
+        const content = document.getElementById('textarea-add-new-reply').value;
+        const uid = Auth.currentUser.uid;
+        const email = Auth.currentUser.email;
+        const timestamp = Date.now();
+        const reply = new Reply({
+            uid, email, timestamp, content, threadId,
+        });
+
+        try {
+            const docId = await FirebaseController.addReply(reply);
+            reply.docId = docId;
+        } catch (e) {
+            if (Constant.DEV) console.log(e)
+            Util.info('Error', JSON.stringify(e));
+        }
+
+        const replyTag = document.createElement('div')
+        replyTag.innerHTML = buildReplyView(reply)
+        document.getElementById('message-reply-body').appendChild(replyTag)
+        document.getElementById('textarea-add-new-reply').value = ''
+    })
+}
+
+function buildReplyView(reply) {
+    return `
+        <div class="border border-primary">
+            <div class="bg-info text white">
+                Replied by ${reply.email} (At ${new Date(reply.timestamp).toString()})
+            </div>
+            ${reply.content}
+        </div>
+        <hr>
+    `;
 }
