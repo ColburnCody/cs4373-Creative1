@@ -4,6 +4,7 @@ export const menuHome = document.getElementById('menu-home');
 export const menuAbout = document.getElementById('menu-about');
 
 //form
+export const formSearch = document.getElementById('form-search');
 export const formSignin = document.getElementById('form-signin');
 export const formCreateThread = document.getElementById('form-create-thread');
 export const formCreateThreadError = {

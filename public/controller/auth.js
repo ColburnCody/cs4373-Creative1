@@ -56,7 +56,7 @@ export function addEventListeners() {
                 elements[i].style.display = 'none';
             }
             history.pushState(null, null, Route.routePath.HOME);
-            Element.root.innerHTML = '<h1>Signed out</h1>'
+            // Element.root.innerHTML = '<h1>Signed out</h1>'
         }
     });
 }
