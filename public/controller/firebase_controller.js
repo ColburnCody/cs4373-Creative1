@@ -25,3 +25,11 @@ export async function getThreadList() {
     });
     return threadList;
 }
+
+export async function getOneThread(threadId) {
+    const ref = await firebase.firestore().collection(Constant.collectionNames.THREADS).doc(threadId).get();
+    if (!ref.exists) return null;
+    const t = new Thread(ref.data());
+    t.docId = threadId;
+    return t;
+}
