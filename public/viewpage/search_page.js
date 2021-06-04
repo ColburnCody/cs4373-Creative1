@@ -7,17 +7,23 @@ import * as Home from './home_page.js'
 import * as Route from '../controller/route.js'
 
 export function addEventListeners() {
-    Element.formSearch.addEventListener('submit', e => {
+    Element.formSearch.addEventListener('submit', async e => {
         e.preventDefault();
         const searchKeys = e.target.searchKeys.value.trim();
         if (searchKeys.length == 0) {
             Util.info('Error', 'No search keys');
             return;
         }
+
+        const button = Element.formSearch.getElementsByTagName('button')[0];
+        const label = Util.disableButton(button);
+        await Util.sleep(1000);
+
         const searchKeysInArray = searchKeys.toLowerCase().match(/\S+/g);
         const joinedSearchKeys = searchKeysInArray.join('+')
         history.pushState(null, null, Route.routePath.SEARCH + '#' + joinedSearchKeys);
-        search_page(joinedSearchKeys);
+        await search_page(joinedSearchKeys);
+        Util.enableButton(button, label);
     })
 }
 
