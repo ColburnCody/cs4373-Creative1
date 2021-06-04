@@ -91,6 +91,7 @@ export async function home_page() {
     } catch (e) {
         if (Constant.DEV) console.log(e);
         Util.info('Error to get thread list', JSON.stringify(e));
+        return;
     }
 
     buildHomeScreen(threadList);

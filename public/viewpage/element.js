@@ -12,6 +12,12 @@ export const formCreateThreadError = {
     keywords: document.getElementById('form-create-thread-error-keywords'),
     content: document.getElementById('form-create-thread-error-content'),
 }
+export const formCreateAccount = document.getElementById('form-create-account');
+export const formCreateAccountError = {
+    email: document.getElementById('create-account-error-email'),
+    password: document.getElementById('create-account-error-password'),
+    passwordConfirm: document.getElementById('create-account-error-passwordConfirm'),
+}
 
 //main content root
 export const root = document.getElementById('root');
@@ -22,3 +28,4 @@ export const modalInfobox = new bootstrap.Modal(document.getElementById('modal-i
 export const modalInfoboxTitleElement = document.getElementById('modal-infobox-title');
 export const modalInfoboxBodyElement = document.getElementById('modal-infobox-body');
 export const modalCreateThread = new bootstrap.Modal(document.getElementById('modal-create-thread'), { backdrop: 'static' });
+export const modalCreateAccount = new bootstrap.Modal(document.getElementById('modal-create-account'), { backdrop: 'static' });
