@@ -58,12 +58,21 @@ export async function thread_page(threadId) {
         return;
     }
 
-    let html = `
+    let html = Auth.currentUser.email != thread.email ? `
         <h4 class="bg-primary text-white">${thread.title}</h4>
         <div>${thread.email} (At ${new Date(thread.timestamp).toString()}</div>
         <div class="bg-secondary text-white">${thread.content}</div>
         <hr>
-    `;
+    ` : `
+    <h4 class="bg-primary text-white">${thread.title}</h4>
+    <div>${thread.email} (At ${new Date(thread.timestamp).toString()}</div>
+    <div class="bg-secondary text-white">${thread.content}</div>
+    <div>
+    <button id="button-edit-thread" class="btn btn-outline-info">Edit</button>
+    <button id="button-delete-thread" class="btn btn-outline-info">Delete</button>
+    </div>
+    <hr>
+`;
 
     html += '<div id="message-reply-body">'
     // display all replies
@@ -116,7 +125,8 @@ export async function thread_page(threadId) {
 }
 
 function buildReplyView(reply) {
-    return `
+    if (Auth.currentUser.email != reply.email) {
+        return `
         <div class="border border-primary">
             <div class="bg-info text white">
                 Replied by ${reply.email} (At ${new Date(reply.timestamp).toString()})
@@ -125,4 +135,17 @@ function buildReplyView(reply) {
         </div>
         <hr>
     `;
+    } else {
+        return `<div class="border border-primary">
+        <div class="bg-info text white">
+            Replied by ${reply.email} (At ${new Date(reply.timestamp).toString()})
+        </div>
+        ${reply.content}
+        <div>
+        <button id="button-edit-reply" class="btn btn-outline-info">Edit</button>
+        <button id="button-delete-reply" class="btn btn-outline-info">Delete</button>
+        </div>
+    </div>
+    <hr>`;
+    }
 }
