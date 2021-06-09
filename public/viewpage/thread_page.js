@@ -5,6 +5,7 @@ import * as FirebaseController from '../controller/firebase_controller.js'
 import * as Constant from '../model/constant.js'
 import { Reply } from '../model/reply.js'
 import * as Route from '../controller/route.js'
+import * as Edit from './edit_page.js'
 
 export function addViewButtonListener() {
     const viewButtonForms = document.getElementsByClassName('thread-view-form');
@@ -94,6 +95,10 @@ export async function thread_page(threadId) {
 
     Element.root.innerHTML = html;
 
+    document.getElementById('button-edit-thread').addEventListener('click', async e => {
+        Edit.addEventListeners();
+    })
+
     document.getElementById('button-add-new-reply').addEventListener('click', async () => {
         const content = document.getElementById('textarea-add-new-reply').value;
         const uid = Auth.currentUser.uid;
@@ -123,6 +128,7 @@ export async function thread_page(threadId) {
         Util.enableButton(button, label);
     })
 }
+
 
 function buildReplyView(reply) {
     if (Auth.currentUser.email != reply.email) {
