@@ -96,7 +96,7 @@ export async function thread_page(threadId) {
     Element.root.innerHTML = html;
 
     document.getElementById('button-edit-thread').addEventListener('click', async e => {
-        Edit.addEventListeners();
+        Edit.addEventListeners(threadId);
     })
 
     document.getElementById('button-add-new-reply').addEventListener('click', async () => {
