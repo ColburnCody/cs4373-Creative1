@@ -42,7 +42,9 @@ export async function updateThread(threadId, content) {
         .update({ 'content': content })
 }
 
-export async function deleteThread(threadId) { }
+export async function deleteThread(threadId) {
+    await firebase.firestore().collection(Constant.collectionNames.THREADS).doc(threadId).delete();
+}
 
 export async function addReply(reply) {
     const ref = await firebase.firestore().collection(Constant.collectionNames.REPLIES).add(reply.serialize());

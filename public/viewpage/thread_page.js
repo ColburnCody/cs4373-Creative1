@@ -99,6 +99,12 @@ export async function thread_page(threadId) {
         EditThread.addEventListeners(threadId);
     })
 
+    document.getElementById('button-delete-thread').addEventListener('click', async e => {
+        await FirebaseController.deleteThread(threadId);
+        window.history.back();
+        Util.info('Deleted', 'Thread deleted')
+    })
+
 
     document.getElementById('button-add-new-reply').addEventListener('click', async () => {
         const content = document.getElementById('textarea-add-new-reply').value;
