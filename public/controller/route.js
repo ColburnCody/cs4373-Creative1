@@ -2,14 +2,14 @@ import * as About from '../viewpage/about_page.js';
 import * as Home from '../viewpage/home_page.js'
 import * as ThreadPage from '../viewpage/thread_page.js'
 import * as Search from '../viewpage/search_page.js'
-import * as Edit from '../viewpage/edit_page.js'
+import * as EditThread from '../viewpage/edit_thread_page.js'
 
 export const routePath = {
     HOME: '/',
     ABOUT: '/about',
     THREAD: '/thread',
     SEARCH: '/search',
-    EDIT: '/edit',
+    EDIT_THREAD: '/edit_thread',
 }
 
 export const routes = [
@@ -17,7 +17,7 @@ export const routes = [
     { path: routePath.ABOUT, page: About.about_page },
     { path: routePath.THREAD, page: ThreadPage.thread_page },
     { path: routePath.SEARCH, page: Search.search_page },
-    { path: routePath.EDIT, page: Edit.edit_page }
+    { path: routePath.EDIT_THREAD, page: EditThread.edit_page },
 ];
 
 export function routing(pathname, hash) {

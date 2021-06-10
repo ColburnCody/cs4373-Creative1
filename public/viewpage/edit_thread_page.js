@@ -6,10 +6,9 @@ import * as Route from '../controller/route.js'
 import * as Element from './element.js'
 
 export function addEventListeners(threadId) {
-    document.getElementById('button-edit-thread').addEventListener('click', () => {
-        history.pushState(null, null, Route.routePath.EDIT + '#' + threadId);
-        edit_page(threadId);
-    })
+
+    history.pushState(null, null, Route.routePath.EDIT_THREAD + '#' + threadId);
+    edit_page(threadId);
 }
 
 export async function edit_page(threadId) {
@@ -32,7 +31,21 @@ export async function edit_page(threadId) {
 
     Element.root.innerHTML = `<h1>
     <div>
-    <textarea id="textarea-edit-thread" placeholder="${thread.content}"></textarea>
+    <textarea id="textarea-edit-thread">${thread.content}</textarea>
+    <div>
+    <button id="button-submit-edit-thread" class="btn btn-outline-info">Confirm</button>
+    <button id="button-cancel-edit-thread" class="btn btn-outline-danger">Cancel</button>
+    </div>
     </div>
     </h1>`
+
+    document.getElementById('button-cancel-edit-thread').addEventListener('click', e => {
+        window.history.back();
+    })
+
+    document.getElementById('button-submit-edit-thread').addEventListener('click', async e => {
+        const content = document.getElementById('textarea-edit-thread').value;
+        await FirebaseController.updateThread(threadId, content)
+        window.history.back();
+    })
 }

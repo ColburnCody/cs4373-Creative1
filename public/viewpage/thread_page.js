@@ -5,7 +5,7 @@ import * as FirebaseController from '../controller/firebase_controller.js'
 import * as Constant from '../model/constant.js'
 import { Reply } from '../model/reply.js'
 import * as Route from '../controller/route.js'
-import * as Edit from './edit_page.js'
+import * as EditThread from './edit_thread_page.js'
 
 export function addViewButtonListener() {
     const viewButtonForms = document.getElementsByClassName('thread-view-form');
@@ -96,8 +96,9 @@ export async function thread_page(threadId) {
     Element.root.innerHTML = html;
 
     document.getElementById('button-edit-thread').addEventListener('click', async e => {
-        Edit.addEventListeners(threadId);
+        EditThread.addEventListeners(threadId);
     })
+
 
     document.getElementById('button-add-new-reply').addEventListener('click', async () => {
         const content = document.getElementById('textarea-add-new-reply').value;
@@ -131,8 +132,7 @@ export async function thread_page(threadId) {
 
 
 function buildReplyView(reply) {
-    if (Auth.currentUser.email != reply.email) {
-        return `
+    return `
         <div class="border border-primary">
             <div class="bg-info text white">
                 Replied by ${reply.email} (At ${new Date(reply.timestamp).toString()})
@@ -141,17 +141,4 @@ function buildReplyView(reply) {
         </div>
         <hr>
     `;
-    } else {
-        return `<div class="border border-primary">
-        <div class="bg-info text white">
-            Replied by ${reply.email} (At ${new Date(reply.timestamp).toString()})
-        </div>
-        ${reply.content}
-        <div>
-        <button id="button-edit-reply" class="btn btn-outline-info">Edit</button>
-        <button id="button-delete-reply" class="btn btn-outline-info">Delete</button>
-        </div>
-    </div>
-    <hr>`;
-    }
 }

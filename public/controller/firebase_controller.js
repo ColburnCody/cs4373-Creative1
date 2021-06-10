@@ -28,17 +28,27 @@ export async function getThreadList() {
 }
 
 export async function getOneThread(threadId) {
-    const ref = await firebase.firestore().collection(Constant.collectionNames.THREADS).doc(threadId).get();
+    const ref = await firebase.firestore()
+        .collection(Constant.collectionNames.THREADS).doc(threadId).get();
     if (!ref.exists) return null;
     const t = new Thread(ref.data());
     t.docId = threadId;
     return t;
 }
 
+export async function updateThread(threadId, content) {
+    await firebase.firestore()
+        .collection(Constant.collectionNames.THREADS).doc(threadId)
+        .update({ 'content': content })
+}
+
+export async function deleteThread(threadId) { }
+
 export async function addReply(reply) {
     const ref = await firebase.firestore().collection(Constant.collectionNames.REPLIES).add(reply.serialize());
     return ref.id;
 }
+
 
 export async function getReplyList(threadId) {
     const snapShot = await firebase.firestore().collection(Constant.collectionNames.REPLIES).where('threadId', '==', threadId).orderBy('timestamp').get();
